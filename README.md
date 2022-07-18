@@ -1,1 +1,1 @@
-# Watchdog Foodbank API
+# Elixir Medicine Finder API
