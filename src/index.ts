@@ -6,6 +6,9 @@ import express from "express";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
 import { expressjwt as jwt, Request } from "express-jwt";
+import {
+    ApolloServerPluginLandingPageGraphQLPlayground
+  } from "apollo-server-core";
 
 // resolvers
 import { resolvers } from "./resolvers";
@@ -40,6 +43,9 @@ async function bootstrap(){
             }
             return context;
          },
+         plugins: [
+            ApolloServerPluginLandingPageGraphQLPlayground,
+         ]
     });
 
     app.use(path, jwt({
