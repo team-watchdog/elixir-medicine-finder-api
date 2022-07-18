@@ -46,7 +46,6 @@ async function bootstrap(){
         secret: JWT_SECRET,
         credentialsRequired: false,
         algorithms: ["HS256"],
-        
     }));
 
     await server.start();
