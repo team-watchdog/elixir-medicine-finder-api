@@ -1,5 +1,6 @@
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, Float, InputType, ObjectType } from "type-graphql";
 
+@InputType("CoordinateInput")
 @ObjectType()
 export class Coordinate{
     @Field(_ => Float)
@@ -9,6 +10,7 @@ export class Coordinate{
     lon: number;
 }
 
+@InputType("LocationInput")
 @ObjectType()
 export class Location {
     @Field()

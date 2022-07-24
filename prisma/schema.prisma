@@ -7,91 +7,51 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum AccountType{
+  PATIENT
+  PHARMACY
+}
+
+model OTPToken{
+    id          Int @id @default(autoincrement())
+    hashedPhoneNumber String
+    hashedPassword String
+
+    expiresAt DateTime
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+}
+
 model Account{
     id          Int @id @default(autoincrement())
-    firstName   String
-    lastName    String
-    email       String @unique
-    contactNumber String
-    hashedPassword String
-    isActive   Boolean
-    verified    Boolean
-    userRoles   Int[]
-
-    organizationId Int
-    organization   Organization  @relation(fields: [organizationId], references: [id])
-
-    
-    resetPasswordHash String?
-    resetPasswordHashExpiry DateTime?
-
-    confirmEmailHash String?
-    confirmEmailHashExpiry DateTime?
+    hashedPhoneNumber String @unique
+    type  AccountType?
+    deviceToken String?
+    pharmacy Pharmacy?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
 }
 
-model Location{
-  id         Int @id @default(autoincrement())
-  latitude   Float
-  longitude  Float
-  formattedAddress String
-  placeId String?
-  
-  organizationId Int
-  organization   Organization  @relation(fields: [organizationId], references: [id])
-}
-
-model Organization{
+model Pharmacy{
     id          Int @id @default(autoincrement())
-    name        String
-    summary     String?
-    description String?
-    logoURL        String?
-    assistanceTypes String[]
-    assistanceFrequency String?
-    peopleReached String?
-
-    // contact details
-    phoneNumbers String[]
-    email String?
-    website String?
-    instagram String?
-    facebook String?
-    paymentLink String?
-
-    // bank details
-    bankName String?
-    accountNumber String?
-    accountName String?
-    accountType String?
-    branchName String?
-    notes String?
-
-    approved Boolean @default(false)
-
-    locations Location[]
-    accounts Account[]
-    invitations Invitation[]
-
+    name String
+    registrationNo String
+    phoneNumber String
+    location Json
+    accountId Int @unique
+    account Account @relation(fields: [accountId], references: [id])
+    
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
 }
 
-model Invitation{
+model Request{
     id          Int @id @default(autoincrement())
-    firstName   String
-    lastName    String
-    email       String @unique
-    userRoles   Int[]
-    created     Boolean @default(false)
-
-    organizationId Int
-    organization   Organization  @relation(fields: [organizationId], references: [id])
-    
-    inviteTokenHash String?
-    inviteTokenHashExpiry DateTime?
+    title String
+    fullfilled Boolean @default(false)
+    items Json[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
