@@ -16,9 +16,6 @@ import { resolvers } from "./resolvers";
 // auth checker
 import { customAuthCheck } from "./auth/customAuthCheck";
 
-// types
-import { AuthenticatedRequest } from "./auth/auth.types";
-
 import "./shared/mail";
 
 const PORT = process.env.PORT || 4000;
@@ -44,7 +41,7 @@ async function bootstrap(){
             return context;
          },
          plugins: [
-            ApolloServerPluginLandingPageGraphQLPlayground,
+            //ApolloServerPluginLandingPageGraphQLPlayground,
          ]
     });
 

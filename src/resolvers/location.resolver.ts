@@ -1,4 +1,4 @@
-import { Arg, Authorized, Query, Resolver, Root } from "type-graphql";
+import { Arg, Query, Resolver } from "type-graphql";
 import axios from "axios";
 
 // types
