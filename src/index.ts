@@ -16,8 +16,6 @@ import { resolvers } from "./resolvers";
 // auth checker
 import { customAuthCheck } from "./auth/customAuthCheck";
 
-import "./shared/mail";
-
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : "";
 
