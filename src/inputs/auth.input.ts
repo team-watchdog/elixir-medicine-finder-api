@@ -14,3 +14,9 @@ export class AuthenticateInput{
     @Field()
     otp: string;
 }
+
+@InputType()
+export class RegisterDeviceInput{
+    @Field()
+    deviceToken: string;
+}
