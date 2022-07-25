@@ -7,10 +7,14 @@ import { AuthenticatedRequest } from "../auth/customAuthCheck";
 
 // input
 import { PharmacyRegistrationInput } from "../inputs/pharmacy.input";
+import { RegisterDeviceInput } from "../inputs/auth.input";
 
 // shared
 import { prisma } from "../shared/db";
 import { Account } from "../types/auth.types";
+
+// client
+import { elasticClient } from "../shared/elastic";
 
 @Resolver()
 export class AccountResolver {
@@ -63,7 +67,7 @@ export class AccountResolver {
 
         if (!account) throw new CustomError("Invalid account", "Invalid account");
 
-        await prisma.$transaction([
+        const [ newPharamacy ] = await prisma.$transaction([
             prisma.pharmacy.create({
                 data: {
                     name: data.name,
@@ -83,7 +87,35 @@ export class AccountResolver {
             })
         ]);
 
-        // TODO: sync pharamacy with elasticsearch
+        // sync pharamacy with elasticsearch
+        const pharamacy = await prisma.pharmacy.findFirst({
+            where: {
+                id: newPharamacy.id,
+            }
+        });
+
+        if (pharamacy) {
+            await elasticClient.index({
+                index: "pharmacy",
+                id: `${pharamacy.id}`,
+                body: pharamacy,
+            });
+        }
+
+        return true;
+    }
+
+    @Authorized()
+    @Mutation(() => Boolean)
+    async registerDeviceToken(@Arg("data") data: RegisterDeviceInput, @Ctx() ctx: Context<AuthenticatedRequest>): Promise<boolean> {
+        await prisma.account.update({
+            where: {
+                id: ctx.user.id,
+            },
+            data: {
+                deviceToken: data.deviceToken,
+            }
+        });
 
         return true;
     }
