@@ -40,7 +40,8 @@ async function bootstrap(){
          },
          plugins: [
             //ApolloServerPluginLandingPageGraphQLPlayground,
-         ]
+         ],
+         introspection: true,
     });
 
     app.use(path, jwt({

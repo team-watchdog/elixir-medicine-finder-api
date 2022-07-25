@@ -1,5 +1,6 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, InputType, ObjectType } from "type-graphql";
 
+@InputType("ProductInput")
 @ObjectType()
 export class Product {
     @Field()
