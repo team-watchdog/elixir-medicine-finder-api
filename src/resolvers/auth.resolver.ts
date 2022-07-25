@@ -1,4 +1,4 @@
-import { Arg, Int, Mutation, Resolver } from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { generate } from "randomstring";
 import bcrypt from "bcrypt";
 import { createHash } from "crypto";
@@ -21,6 +21,7 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : "";
 
 @Resolver()
 export class AuthResolver {
+    
     @Mutation(() => Int)
     async getOTP(@Arg("data") data: GetOTPInput): Promise<number> {
         const otp = generate({ length: 6, charset: "numeric" });

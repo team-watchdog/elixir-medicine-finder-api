@@ -1,4 +1,4 @@
-import { Mutation, Resolver, Ctx, Authorized, Arg } from "type-graphql";
+import { Mutation, Resolver, Ctx, Authorized, Arg, Query } from "type-graphql";
 import { Context } from "apollo-server-core";
 
 // types
@@ -10,9 +10,23 @@ import { PharmacyRegistrationInput } from "../inputs/pharmacy.input";
 
 // shared
 import { prisma } from "../shared/db";
+import { Account } from "../types/auth.types";
 
 @Resolver()
 export class AccountResolver {
+    @Authorized()
+    @Query(_ => Account)
+    async me(@Ctx() ctx: Context<AuthenticatedRequest>): Promise<Account> {
+        const account = await prisma.account.findFirst({
+            where: {
+                id: ctx.user.id,
+            },
+        });
+
+        if (!account) throw new CustomError("Invalid account", "Invalid account");
+        return account as Account;
+    }
+
     @Authorized()
     @Mutation(() => Boolean)
     async registerAsPatient(@Ctx() ctx: Context<AuthenticatedRequest>): Promise<boolean> {
