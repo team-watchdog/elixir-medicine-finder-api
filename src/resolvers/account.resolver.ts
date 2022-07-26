@@ -98,7 +98,10 @@ export class AccountResolver {
             await elasticClient.index({
                 index: "pharmacy",
                 id: `${pharamacy.id}`,
-                body: pharamacy,
+                body: {
+                    ...pharamacy,
+                    location: data.location,
+                },
             });
         }
 

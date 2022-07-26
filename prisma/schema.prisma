@@ -50,8 +50,11 @@ model Pharmacy{
 model Request{
     id          Int @id @default(autoincrement())
     name String
+    itemCount Int @default(0)
+    fullfilledCount Int @default(0)
     fullfilled Boolean @default(false)
     products Json[]
+    location Json
 
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
