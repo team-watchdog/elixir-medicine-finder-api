@@ -3,6 +3,7 @@ import { ObjectType, InputType, Field, Int } from "type-graphql";
 // types
 import { Product } from "./product.types";
 import { Pharmacy } from "./pharmacy.types";
+import { Coordinate } from "./location.types";
 
 @InputType("PharamacyResponseInput")
 export class PharamacyResponseInput{
@@ -39,16 +40,28 @@ export class MedicineRequestInput{
     @Field(_ => [Product])
     products: Product[];
 
+    @Field(_ => Coordinate, { nullable: true })
+    location: Coordinate | null;
+}
+
+
+@ObjectType("MedicineRequest")
+export class MedicineRequest{
+    @Field(_ => Int)
+    id: number;
+
+    @Field()
+    name: string;
+
+    @Field(_ => [Product])
+    products: Product[];
+
+    @Field(_ => Coordinate, { nullable: true })
+    location: Coordinate | null;
+
     @Field(_ => Date)
     createdAt: Date;
 
     @Field(_ => Date)
     updatedAt: Date;
-}
-
-
-@ObjectType("MedicineRequest")
-export class MedicineRequest extends MedicineRequestInput{
-    @Field(_ => Int)
-    id: number;
 }
